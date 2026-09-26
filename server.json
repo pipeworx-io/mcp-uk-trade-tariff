@@ -3,7 +3,7 @@
   "name": "io.github.pipeworx-io/uk-trade-tariff",
   "title": "Uk Trade Tariff",
   "description": "UK Integrated Online Tariff from HMRC's trade-tariff service: look up a UK commodity code, its…",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://pipeworx.io/packs/uk-trade-tariff",
   "repository": {
     "url": "https://github.com/pipeworx-io/mcp-uk-trade-tariff",

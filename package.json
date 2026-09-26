@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-uk-trade-tariff",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "UK Integrated Online Tariff from HMRC's trade-tariff service: look up a UK commodity code, its third-country and preferential duty rates by origin, VAT and excise, import/export licensing conditions, and live tariff-rate quota balances.",
   "type": "module",
   "main": "src/index.ts",
@@ -26,7 +26,7 @@
     "@cloudflare/workers-types": "^4.20260405.1"
   },
   "pipeworx": {
-    "sourceHash": "v1-3dc1f21bfb99518947ef7ee2bc1412a6d8923b0c0b8322a45ac05194795ed1e3",
-    "sourceCommit": "b0fb3c31386cf0256dcf1e2f1b3440435a87ec35"
+    "sourceHash": "v1-629c476ac541954d5f8c4b54421e362b53a519081f4867ff8c47a18ef2ce89d3",
+    "sourceCommit": "66a0692f029179984440cef6938cba7fdd41d66d"
   }
 }
