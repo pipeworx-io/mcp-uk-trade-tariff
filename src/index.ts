@@ -1046,7 +1046,7 @@ async function heading(args: Record<string, unknown>): Promise<unknown> {
   const attrs = data?.data?.attributes ?? {};
   const map = indexIncluded(data?.included);
 
-  const commodities = Array.from(map.values())
+  let commodities = Array.from(map.values())
     .filter((x) => x?.type === 'commodity' || x?.type === 'subheading')
     .map((x) => ({
       commodity_code: str(x.attributes?.goods_nomenclature_item_id),
@@ -1066,6 +1066,27 @@ async function heading(args: Record<string, unknown>): Promise<unknown> {
     )
     .slice(0, limit);
 
+  // 2026-10-09: some headings (2602-2614 ores, 2817, 2822, …) ARE the
+  // declarable leaf themselves — `included` carries only measures/footnotes/
+  // geo areas for these, no commodity or subheading child — so the filter
+  // above returned []. Confirmed live: GET /headings/2603 has
+  // attributes.declarable true and goods_nomenclature_item_id 2603000000
+  // with no commodity in `included`, versus /headings/8471 (declarable
+  // false, 20 commodity children). Synthesize the heading itself as the
+  // single commodity row rather than reporting an empty list.
+  let headingIsDeclarableLeaf = false;
+  if (commodities.length === 0 && attrs.declarable === true) {
+    headingIsDeclarableLeaf = true;
+    commodities = [{
+      commodity_code: str(attrs.goods_nomenclature_item_id),
+      producline_suffix: str(attrs.producline_suffix),
+      description: str(attrs.description_plain) || str(attrs.description),
+      number_indents: num(attrs.number_indents, 0),
+      declarable: true,
+      kind: 'heading',
+    }];
+  }
+
   return {
     source: 'HMRC UK Integrated Online Tariff (trade-tariff.service.gov.uk)',
     licence: 'Open Government Licence v3.0',
@@ -1074,7 +1095,9 @@ async function heading(args: Record<string, unknown>): Promise<unknown> {
     validity_start_date: str(attrs.validity_start_date),
     commodities_returned: commodities.length,
     commodities,
-    note: 'Only `declarable: true` rows may be used on a customs declaration; the rest are parent lines in the classification tree. A code appearing twice is one subheading line (producline_suffix "10") and one leaf ("80"), not a duplicate.',
+    note: headingIsDeclarableLeaf
+      ? 'This heading has no commodity/subheading children — the heading itself is the declarable code (producline_suffix "80" leaf). Use the 4-digit heading as the commodity code.'
+      : 'Only `declarable: true` rows may be used on a customs declaration; the rest are parent lines in the classification tree. A code appearing twice is one subheading line (producline_suffix "10") and one leaf ("80"), not a duplicate.',
   };
 }
 
