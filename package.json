@@ -1,12 +1,20 @@
 {
   "name": "@pipeworx/mcp-uk-trade-tariff",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "UK Integrated Online Tariff from HMRC's trade-tariff service: look up a UK commodity code, its third-country and preferential duty rates by origin, VAT and excise, import/export licensing conditions, and live tariff-rate quota balances.",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "mcp-uk-trade-tariff": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
   },
   "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "uk-trade-tariff"],
   "license": "MIT",
@@ -14,19 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/pipeworx-io/mcp-uk-trade-tariff.git"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "tsx": "^4.19.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3",
-    "@cloudflare/workers-types": "^4.20260405.1"
-  },
+  "mcpName": "io.github.pipeworx-io/uk-trade-tariff",
   "pipeworx": {
-    "sourceHash": "v1-7ab94af0c2c19bb88d628fe29e1c169e33401ae38b0c79fb63feff5ed90db0dc",
-    "sourceCommit": "3723e46c6d115bd4a1fd2175e6bf758555e7cb50"
+    "mode": "gateway",
+    "slug": "uk-trade-tariff",
+    "gatewaySlug": "uk-trade-tariff",
+    "sourceHash": "v1-7be7cbbfd29e31807772e87fb967d88d0536b174f7bef6fda3f6c510b4d0ec07",
+    "sourceCommit": "f47d581679e1e887373df51ba623f891fbe4c464"
   }
 }
